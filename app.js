@@ -12,12 +12,12 @@ app.use(compress({
 app.use(router);
 
 
-app.listen(5000, function (err) {
+app.listen(process.env.PORT, function (err) {
 if(err){
 	console.log("Error while starting server");
   return;
 }
-console.log("Server has been started at "+5000);
+console.log("Server has been started at "+ process.env.PORT);
 })
 
 

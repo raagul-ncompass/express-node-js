@@ -35,7 +35,7 @@ const display = (req, res)=> {
 
 const usecaseForCompression = async(req,res) =>{
     try{
-        let result = await mySqlOperation("select * from surveydataforcompress;")
+        let result = await mySqlOperation("select * from devices;")
         res.status(202).send({
             message:"operation result",
             data:result

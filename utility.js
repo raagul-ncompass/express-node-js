@@ -16,9 +16,9 @@ const authorizationOfUser = (req,res,next) => {
     const token = req.token;
     if (!token) {
         res.status(401).send({
-            message:"unauthorized token: emty"
+            message:"token: emty"
         });
-        console.log("unauthorized token: emty");
+        console.log("token: emty");
         return;
     }
     
@@ -30,7 +30,7 @@ const authorizationOfUser = (req,res,next) => {
             });
             return ;
         }
-    console.log(Object.values(data)[0],Object.values(data)[1]);
+    console.log("valid user!!!");
     res.status(200)
     next();    
     })
@@ -38,13 +38,8 @@ const authorizationOfUser = (req,res,next) => {
 
 const authenticationOfUser = async (req,res) => {
     let temp =  await mySqlOperation("select username,password from userinfo where username = ?;",req.body.username);
+    try {
     const hash = temp[0].password;
-    if(!(temp[0].username)){
-        res.status(404).send({
-            message:"Please sign up username not found"
-        });
-        return;
-    }
     const validPassword = await bcrypt.compare(req.body.password,hash);
     if(!(validPassword)){
         res.status(401).send({
@@ -58,6 +53,13 @@ const authenticationOfUser = async (req,res) => {
         message:"this is the token",
         data:{token}       
     });
+    }
+    catch(err){
+        res.status(404).send({
+            message:"Please sign up username not found"
+        });
+        console.log(err.message+ "     in errr");
+    }
 }
 
 module.exports={

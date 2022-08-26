@@ -5,7 +5,7 @@ const { validateIdParams, validateInsertData, validateNameBody, validateNamePara
 
 router.post("/login/",authenticationOfUser);
 
-router.get('/getstudentdetails/:name',validateNameParams,getStudentData);
+router.get('/getstudentdetails/:name',authorizationOfUser,validateNameParams,getStudentData);
 
 router.delete('/deletestudentdetails/:id',authorizationOfUser,validateIdParams,delStudentData);
 
