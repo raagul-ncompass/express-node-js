@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { urlNotFound, display, getSignupData, getStudentData, delStudentData, insertStudentData, updateStudentData } = require("./controller");
+const { urlNotFound, display, getSignupData, getStudentData, delStudentData, insertStudentData, updateStudentData, usecaseForCompression } = require("./controller");
 const { authenticationOfUser, authorizationOfUser } = require("./utility");
 const { validateIdParams, validateInsertData, validateNameBody, validateNameParams, validateSignupData } = require('./validation')
 
@@ -14,6 +14,8 @@ router.post('/insertstudentdata/',authorizationOfUser,validateInsertData,insertS
 router.put('/updatestudent/:id',authorizationOfUser,validateIdParams,validateNameBody,updateStudentData);
 
 router.get('/hello',authorizationOfUser, display);
+
+router.get('/usecaseforcompress',usecaseForCompression);
 
 router.post("/signup/",validateSignupData,getSignupData);
 

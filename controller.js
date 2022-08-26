@@ -2,7 +2,7 @@ const { mySqlOperation } = require('./db');
 var bcrypt = require('bcrypt');
 
 
-const getSignupData = (req,res) =>{
+const getSignupData = async (req,res) =>{
     let firstname = req.body.firstname
     let lastname = req.body.lastname
     let username = req.body.username;
@@ -16,10 +16,11 @@ const getSignupData = (req,res) =>{
         }
         var sql = "INSERT INTO userinfo (firstname,lastname,username,password) VALUES (?)";
         var values = [[firstname,lastname,username,hash]];
+        let result = await mySqlOperation(sql,values)
         res.status(202).send(
             {
             message:"successfully signed up!",
-            data:await mySqlOperation(sql,values)
+            data: result
             }
         );
     })
@@ -32,12 +33,27 @@ const display = (req, res)=> {
     });
 }
 
-
-const getStudentData = async(req,res)=>{
+const usecaseForCompression = async(req,res) =>{
     try{
+        let result = await mySqlOperation("select * from surveydataforcompress;")
         res.status(202).send({
             message:"operation result",
-            data:await mySqlOperation("select * from student where name = ?;",(req.params.name))
+            data:result
+        });
+    }
+    catch(err)
+    {
+        res.status(406).send({
+            message:err.message
+        })   
+    }
+}
+const getStudentData = async(req,res)=>{
+    try{
+        let result = await mySqlOperation("select * from student where name = ?;",(req.params.name));
+        res.status(202).send({
+            message:"operation result",
+            data: result 
         });
     }
     catch(err)
@@ -45,13 +61,15 @@ const getStudentData = async(req,res)=>{
         res.status(406).send({
             message:err
         })   
-    }}
+    }
+}
 
 const delStudentData=async(req,res)=>{
     try{
+        let result = await mySqlOperation("delete from student where id = ?;",(req.params.id))
         res.status(202).send({
             message:"operation result",
-            data:await mySqlOperation("delete from student where id = ?;",(req.params.id))
+            data: result 
         });
     }
     catch(err){
@@ -62,9 +80,10 @@ const delStudentData=async(req,res)=>{
 
 const insertStudentData=async(req,res)=>{
     try{
+        let result = await mySqlOperation("insert into student values(?);",[Object.values(req.body)]);
         res.status(202).send({
             message:"operation result",
-            data: await mySqlOperation("insert into student values(?);",[Object.values(req.body)])
+            data: result 
         });
     }
     catch(err)
@@ -77,9 +96,10 @@ const insertStudentData=async(req,res)=>{
 
 const updateStudentData=async(req,res)=>{
     try{
+        let result = await mySqlOperation("update student set name = ? where id=?;",[req.body.name,req.params.id]);
         res.status(202).send({
             message:"operation result",
-            data:await mySqlOperation("update student set name = ? where id=?;",[req.body.name,req.params.id])
+            data: result 
         })
     }
     catch(err){
@@ -91,7 +111,7 @@ const updateStudentData=async(req,res)=>{
 
 const urlNotFound =(req,res)=>{
     res.status(404).send({
-        message:'Not found'
+        message:'404 page Not found'
     });
 }
 
@@ -103,5 +123,6 @@ module.exports={
     delStudentData,
     updateStudentData,
     getSignupData,
-    getStudentData
+    getStudentData,
+    usecaseForCompression
 }
