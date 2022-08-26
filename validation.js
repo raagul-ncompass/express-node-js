@@ -7,7 +7,9 @@ const validateNameParams = (req, res,next) =>{
     const result = nameJoi.validate(req.params);
     if(result.error){
         res.status(406);
-        res.send(result.error.message);
+        res.send({
+            message:result.error.message
+        });
         return;
     }
     next()
@@ -20,7 +22,9 @@ const validateNameBody = (req, res,next) =>{
     const result = nameJoi.validate(req.body);
     if(result.error){
         res.status(406);
-        res.send(result.error.message);
+        res.send({
+            message:result.error.message
+        });
         return;
     }
     next()
@@ -33,8 +37,11 @@ const validateIdParams = (req, res,next) =>{
     const result = idJoi.validate(req.params);
     if(result.error){
         res.status(406);
-        res.send(result.error.message);
-        return;}
+        res.send({
+            message:result.error.message
+        });
+        return;
+    }
     next();
 }
 
@@ -48,7 +55,9 @@ const validateInsertData = (req, res,next) =>{
     const result = nameJoi.validate(req.body);
     if(result.error){
         res.status(406); 
-        res.send(result.error.message);
+        res.send({
+            message:result.error.message
+        });
         return;
     }
     next()
@@ -64,7 +73,9 @@ const validateSignupData = (req, res,next) =>{
     const result = nameJoi.validate(req.body);
     if(result.error){
         res.status(406); 
-        res.send(result.error.message);
+        res.send({
+            message:result.error.message
+        });
         return;
     }
     next()

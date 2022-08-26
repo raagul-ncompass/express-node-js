@@ -1,6 +1,6 @@
 let mysql = require('mysql');
 
-function dbConnect() {
+const dbConnect = () => {
   let connection = mysql.createConnection({
     host: process.env.HOST,
     user: process.env.DB_USER,
@@ -11,6 +11,9 @@ function dbConnect() {
   connection.connect(function (error) {
     if (error) {
       res.status(500);
+      res.send({
+        message:"something went wrong"
+      })
       return console.error('error: ' + error.message);
     }
     console.log('Connected to the MySQL.');

@@ -1,19 +1,19 @@
 const router = require("express").Router();
 const { urlNotFound, display, getSignupData, getStudentData, delStudentData, insertStudentData, updateStudentData } = require("./controller");
-const { autherizationOfUser, authenticateOfUser } = require("./utility");
+const { authenticationOfUser, authorizationOfUser } = require("./utility");
 const { validateIdParams, validateInsertData, validateNameBody, validateNameParams, validateSignupData } = require('./validation')
 
-router.post("/login/",authenticateOfUser);
+router.post("/login/",authenticationOfUser);
 
 router.get('/getstudentdetails/:name',validateNameParams,getStudentData);
 
-router.delete('/deletestudentdetails/:id',autherizationOfUser,validateIdParams,delStudentData);
+router.delete('/deletestudentdetails/:id',authorizationOfUser,validateIdParams,delStudentData);
 
-router.post('/insertstudentdata/',autherizationOfUser,validateInsertData,insertStudentData);
+router.post('/insertstudentdata/',authorizationOfUser,validateInsertData,insertStudentData);
 
-router.put('/updatestudent/:id',autherizationOfUser,validateIdParams,validateNameBody,updateStudentData);
+router.put('/updatestudent/:id',authorizationOfUser,validateIdParams,validateNameBody,updateStudentData);
 
-router.get('/hello',autherizationOfUser, display);
+router.get('/hello',authorizationOfUser, display);
 
 router.post("/signup/",validateSignupData,getSignupData);
 
